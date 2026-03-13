@@ -1,0 +1,90 @@
+plugins {
+	id 'java'
+	id 'idea'
+	id 'eclipse'
+	id 'maven-publish'
+	id 'net.minecraftforge.gradle' version '[7.0.11,8.0)'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+	archivesName = project.mod_id
+}
+
+java {
+	toolchain.languageVersion = JavaLanguageVersion.of(21)
+	withSourcesJar()
+}
+
+minecraft {
+	mappings channel: 'official', version: "${project.minecraft_version}"
+	accessTransformer = true
+
+	runs {
+		configureEach {
+			workingDir.convention layout.projectDirectory.dir('run')
+			systemProperty 'forge.logging.markers', 'REGISTRIES'
+			systemProperty 'forge.logging.console.level', 'debug'
+			args "--mixin.config=${project.mod_id}.mixins.json"
+		}
+		register('client')
+	}
+}
+
+repositories {
+	minecraft.mavenizer(it)
+	maven fg.forgeMaven
+	maven fg.minecraftLibsMaven
+	mavenCentral()
+}
+
+dependencies {
+	implementation minecraft.dependency("net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}")
+	annotationProcessor 'net.minecraftforge:eventbus-validator:7.0.1'
+}
+
+processResources {
+	def projectVersion = project.version
+	inputs.property "version", projectVersion
+
+	filesMatching("META-INF/mods.toml") {
+		expand "version": projectVersion
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = 'UTF-8'
+	it.options.release = 21
+}
+
+tasks.named('jar', Jar) {
+	def archivesBase = archiveBaseName.get()
+	def modId = project.mod_id
+	def projectName = project.name
+	from("LICENSE") {
+		rename { "${it}_${archivesBase}" }
+	}
+	manifest {
+		attributes([
+			'MixinConfigs'            : "${modId}.mixins.json",
+			'Specification-Title'     : modId,
+			'Specification-Vendor'    : 'Coderx_Gamer',
+			'Specification-Version'   : '1',
+			'Implementation-Title'    : projectName,
+			'Implementation-Version'  : archiveVersion,
+			'Implementation-Vendor'   : 'Coderx_Gamer',
+			'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+		])
+	}
+}
+
+// configure the maven publication
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+}

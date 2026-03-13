@@ -1,0 +1,23 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.ui_utils.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "BookEditScreenMixin",
+    "BookScreenMixin",
+    "ChatScreenMixin",
+    "ClientCommonNetworkHandlerMixin",
+    "ClientConnectionMixin",
+    "HandledScreenMixin",
+    "MultiplayerScreenMixin",
+    "ScreenMixin",
+    "SignEditScreenMixin",
+    "TitleScreenMixin",
+    "accessor.ClientConnectionAccessor",
+    "accessor.ScreenAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

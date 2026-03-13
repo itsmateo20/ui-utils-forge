@@ -1,0 +1,26 @@
+modLoader="javafml"
+loaderVersion="[61,)"
+license="CC BY-NC-SA 4.0"
+
+[[dependencies.ui_utils]]
+    modId="forge"
+    mandatory=true
+    versionRange="[61,)"
+    ordering="NONE"
+    side="CLIENT"
+
+[[dependencies.ui_utils]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.21.11,)"
+    ordering="NONE"
+    side="CLIENT"
+
+[[mods]]
+    modId="ui_utils"
+    version="${version}"
+    displayName="UI Utils"
+    description="Plugin debugging mod."
+    displayURL="https://ui-utils.com"
+    authors="Coderx_Gamer, MrBreakNFix"
+    logoFile="assets/ui_utils/icon.png"
